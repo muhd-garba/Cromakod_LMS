@@ -20,11 +20,13 @@ const loginSchema = z.object({
 });
 
 export const register = async (req: Request, res: Response) => {
+    console.log('Register request body:', req.body);
     try {
         const { email, password, name, role } = registerSchema.parse(req.body);
 
         const existingUser = await prisma.user.findUnique({ where: { email } });
         if (existingUser) {
+            console.log('User already exists:', email);
             return res.status(400).json({ message: 'User already exists' });
         }
 
@@ -42,7 +44,11 @@ export const register = async (req: Request, res: Response) => {
 
         res.status(201).json({ token, user: { id: user.id, email: user.email, name: user.name, role: user.role } });
     } catch (error) {
-        res.status(400).json({ message: 'Validation error or server error', error });
+        console.error('Registration error:', error);
+        if (error instanceof z.ZodError) {
+            return res.status(400).json({ message: 'Validation error', errors: error.errors });
+        }
+        res.status(500).json({ message: 'Server error during registration', error: String(error) });
     }
 };
 

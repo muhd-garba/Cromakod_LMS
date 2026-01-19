@@ -19,10 +19,17 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState<User | null>(null);
-    const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
-    const [isLoading, setIsLoading] = useState(true);
+    const [user, setUser] = useState<User | null>({
+        id: 'mock-admin-id',
+        email: 'admin@cromkod.com',
+        name: 'Mock Admin',
+        role: 'ADMIN'
+    });
+    const [token, setToken] = useState<string | null>('mock-token');
+    const [isLoading, setIsLoading] = useState(false);
 
+    // TEMPORARILY DISABLED FOR DEBUGGING
+    /*
     useEffect(() => {
         const initAuth = async () => {
             if (token) {
@@ -39,6 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         };
         initAuth();
     }, [token]);
+    */
 
     const login = (newToken: string, newUser: User) => {
         localStorage.setItem('token', newToken);

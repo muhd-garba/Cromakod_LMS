@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from './AuthContext';
 import api from '../../api/axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export const LoginPage: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -54,6 +54,14 @@ export const LoginPage: React.FC = () => {
                         Sign In
                     </button>
                 </form>
+                <div className="mt-4 text-center">
+                    <p className="text-sm text-gray-600">
+                        Don't have an account?{' '}
+                        <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
+                            Sign up
+                        </Link>
+                    </p>
+                </div>
             </div>
         </div>
     );

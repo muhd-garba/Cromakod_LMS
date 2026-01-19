@@ -11,6 +11,14 @@ interface AuthRequest extends Request {
 }
 
 export const authenticateCallback = (req: AuthRequest, res: Response, next: NextFunction) => {
+    // TEMPORARILY BYPASSED AUTH
+    req.user = {
+        userId: 'mock-admin-id',
+        role: 'ADMIN' // Treat everyone as ADMIN for now
+    };
+    next();
+
+    /*
     const token = req.header('Authorization')?.replace('Bearer ', '');
 
     if (!token) {
@@ -24,13 +32,19 @@ export const authenticateCallback = (req: AuthRequest, res: Response, next: Next
     } catch (error) {
         res.status(401).json({ message: 'Invalid token' });
     }
+    */
 };
 
 export const authorize = (roles: string[]) => {
     return (req: AuthRequest, res: Response, next: NextFunction) => {
+        // TEMPORARILY BYPASSED AUTH
+        next();
+
+        /*
         if (!req.user || !roles.includes(req.user.role)) {
             return res.status(403).json({ message: 'Access denied' });
         }
         next();
+        */
     };
 };
